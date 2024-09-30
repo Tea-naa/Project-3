@@ -6,13 +6,13 @@ function App() {
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [doneTasks, setDoneTasks] = useState([]);
-  const [newTask, setNewTask] = useState('');
+  const [newTask, setNewTask] = useState("");
 
   // function to add a new task 
   const addTask = () => {
     if (newTask) {
-      setTasks([...tasks, newTask]);
-      setNewTask('');
+      setTasks([...tasks, { title: newTask, completed: false}]);
+      setNewTask("");
     }
   };
 
@@ -29,7 +29,7 @@ function App() {
   const completeTask = (index) => {
     const taskToComplete = tasks[index];
     setTasks(tasks.filter((_, i) => i !== index));
-    setDoneTasks([...doneTasks, taskToComplete]);
+    setDoneTasks([...doneTasks, {...taskToComplete, completed: true}]);
   };
 
 
@@ -62,7 +62,13 @@ function App() {
 
       {/* Task list - display to-do or completed tasks based on btn clicked*/}
 
-      <ToDoList />
+      <TodoList 
+        tasks={isButtonClicked ? doneTasks : tasks}
+        deleteTask={deleteTask}
+        completeTask={completeTask}
+        isCompleted={isButtonClicked}
+      />
+
     </div>
   );
 }
